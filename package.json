@@ -1,0 +1,25 @@
+{
+  "name": "web-development-foundations",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "WDF1-Portfolio-Custom-Domain/solution",
+    "WDF1-Portfolio-Custom-Domain/starter",
+    "WDF2-Notes-App-with-MongoDB/solution",
+    "WDF2-Notes-App-with-MongoDB/starter",
+    "WDF3-Booking-Contact-App/solution",
+    "WDF3-Booking-Contact-App/starter",
+    "WDF4-Realtime-Chat-App/solution",
+    "WDF4-Realtime-Chat-App/starter",
+    "WDF5-Separate-Deployment-Lab/solution/backend",
+    "WDF5-Separate-Deployment-Lab/starter/backend"
+  ],
+  "scripts": {
+    "install-all": "npm install",
+    "dev": "npm run dev --workspaces --if-present",
+    "start": "npm run start --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "preview": "npm run preview --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present"
+  }
+}

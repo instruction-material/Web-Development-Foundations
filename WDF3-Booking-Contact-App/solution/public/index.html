@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<title>Booking and Contact Solution</title>
+	<link href="/styles.css" rel="stylesheet">
+</head>
+<body>
+<main class="shell">
+	<section class="panel">
+		<p class="eyebrow">Form validation and email flow</p>
+		<h1>Request a project or lesson</h1>
+		<form class="stack" id="contact-form">
+			<label>
+				<input name="name" placeholder="Name" required>
+			</label>
+			<label>
+				<input name="email" placeholder="Email" required type="email">
+			</label>
+			<label>
+				<textarea name="message" placeholder="Message" required></textarea>
+			</label>
+			<button type="submit">Send request</button>
+		</form>
+		<p id="status"></p>
+	</section>
+</main>
+<script src="/app.js" type="module"></script>
+</body>
+</html>
+

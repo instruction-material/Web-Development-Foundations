@@ -1,0 +1,27 @@
+body {
+	margin: 0;
+	font-family: system-ui, sans-serif;
+	color: #111827;
+	background: linear-gradient(135deg, rgba(46, 196, 182, 0.18), transparent 30%),
+	linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+}
+
+.shell {
+	width: min(64rem, calc(100vw - 2rem));
+	margin: 0 auto;
+	padding: 4rem 0;
+}
+
+.hero {
+	background: white;
+	border-radius: 1rem;
+	padding: 1.5rem;
+	box-shadow: 0 16px 48px rgba(17, 24, 39, 0.08);
+}
+
+.eyebrow {
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	font-size: 0.8rem;
+}
+

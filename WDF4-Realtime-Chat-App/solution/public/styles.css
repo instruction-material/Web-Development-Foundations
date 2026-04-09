@@ -1,0 +1,75 @@
+body {
+	margin: 0;
+	font-family: system-ui, sans-serif;
+	background: #10131a;
+	color: #eff3fb;
+}
+
+.shell {
+	width: min(52rem, calc(100vw - 2rem));
+	margin: 0 auto;
+	padding: 2rem 0;
+}
+
+.panel {
+	background: #171c27;
+	border: 1px solid rgba(239, 243, 251, 0.08);
+	border-radius: 1rem;
+	padding: 1rem;
+}
+
+.row {
+	display: flex;
+	gap: 0.75rem;
+	margin-bottom: 1rem;
+}
+
+input,
+button {
+	font: inherit;
+}
+
+input {
+	flex: 1;
+	padding: 0.75rem;
+	border-radius: 0.75rem;
+	border: 1px solid rgba(239, 243, 251, 0.16);
+	background: #0f141d;
+	color: inherit;
+}
+
+button {
+	padding: 0.75rem 1rem;
+	border: none;
+	border-radius: 999px;
+	background: #4cc9f0;
+	color: #091018;
+}
+
+.messages {
+	list-style: none;
+	padding: 0;
+	margin: 0 0 1rem;
+	display: grid;
+	gap: 0.5rem;
+}
+
+.message {
+	padding: 0.7rem 0.85rem;
+	border-radius: 0.8rem;
+}
+
+.message.user {
+	background: rgba(76, 201, 240, 0.15);
+}
+
+.message.system {
+	background: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 640px) {
+	.row {
+		flex-direction: column;
+	}
+}
+

@@ -1,0 +1,73 @@
+body {
+	margin: 0;
+	font-family: system-ui, sans-serif;
+	background: #f3f6fb;
+	color: #162033;
+}
+
+.shell {
+	width: min(72rem, calc(100vw - 2rem));
+	margin: 0 auto;
+	padding: 2rem 0;
+	display: grid;
+	grid-template-columns: minmax(18rem, 22rem) 1fr;
+	gap: 1rem;
+}
+
+.panel {
+	background: white;
+	border-radius: 1rem;
+	padding: 1rem;
+	box-shadow: 0 12px 30px rgba(22, 32, 51, 0.08);
+}
+
+.stack {
+	display: grid;
+	gap: 0.75rem;
+}
+
+input,
+textarea,
+button {
+	font: inherit;
+}
+
+input,
+textarea {
+	padding: 0.75rem;
+	border: 1px solid #c9d2e3;
+	border-radius: 0.75rem;
+}
+
+textarea {
+	min-height: 8rem;
+}
+
+button {
+	width: fit-content;
+	padding: 0.7rem 1rem;
+	border: none;
+	border-radius: 999px;
+	background: #1e63ff;
+	color: white;
+}
+
+.notes {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: grid;
+	gap: 0.75rem;
+}
+
+.note {
+	border: 1px solid #dde4f1;
+	border-radius: 0.9rem;
+	padding: 0.9rem;
+}
+
+@media (max-width: 720px) {
+	.shell {
+		grid-template-columns: 1fr;
+	}
+}

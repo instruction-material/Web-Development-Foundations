@@ -1,0 +1,13 @@
+{
+  "name": "wdf3-booking-contact-starter",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "nodemailer": "^8.0.5"
+  }
+}

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<title>Notes App Solution</title>
+	<link href="/styles.css" rel="stylesheet">
+</head>
+<body>
+<main class="shell">
+	<section class="panel">
+		<h1>Notes App</h1>
+		<form class="stack" id="note-form">
+			<label for="title"></label><input id="title" name="title" placeholder="Title" required>
+			<label for="body"></label><textarea id="body" name="body" placeholder="Body" required></textarea>
+			<label for="tags"></label><input id="tags" name="tags" placeholder="Comma-separated tags">
+			<button type="submit">Save note</button>
+		</form>
+	</section>
+	<section class="panel">
+		<h2>Saved Notes</h2>
+		<ul class="notes" id="notes"></ul>
+	</section>
+</main>
+<script src="/app.js" type="module"></script>
+</body>
+</html>
+

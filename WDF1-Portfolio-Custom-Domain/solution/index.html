@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<title>Portfolio Solution</title>
+	<meta content="Responsive portfolio prepared for custom-domain deployment." name="description">
+	<link href="styles.css" rel="stylesheet">
+</head>
+<body>
+<header class="hero">
+	<p class="eyebrow">Portfolio and Deployment</p>
+	<h1>Student work, shipped beyond localhost.</h1>
+	<p class="lead">
+		This sample portfolio demonstrates stronger hierarchy, responsive sections,
+		and a deployment checklist that connects design work to real publishing.
+	</p>
+	<a class="cta" href="#projects">Review projects</a>
+</header>
+
+<main>
+	<section class="section" id="projects">
+		<h2>Projects</h2>
+		<div class="grid">
+			<article class="card">
+				<h3>Interactive Landing Page</h3>
+				<p>Responsive layout, semantic structure, and accessible navigation.</p>
+			</article>
+			<article class="card">
+				<h3>Client-Side Data Explorer</h3>
+				<p>Async data loading with clear empty, loading, and error states.</p>
+			</article>
+			<article class="card">
+				<h3>Deployment Audit</h3>
+				<p>DNS, domain, hosting, and post-launch verification checklist.</p>
+			</article>
+		</div>
+	</section>
+	
+	<section class="section stack">
+		<div>
+			<h2>Launch Checklist</h2>
+			<ul id="deployment-list"></ul>
+		</div>
+		<div class="domain-box">
+			<h2>Domain Rollout</h2>
+			<p id="domain-status"></p>
+		</div>
+	</section>
+</main>
+
+<footer class="footer">
+	<span id="year"></span>
+	<span>Ready for static hosting and a custom domain.</span>
+</footer>
+
+<script src="main.js" type="module"></script>
+</body>
+</html>
+

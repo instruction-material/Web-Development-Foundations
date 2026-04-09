@@ -1,0 +1,14 @@
+{
+  "name": "wdf2-notes-app-starter",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "mongoose": "^9.4.1",
+    "zod": "^4.3.6"
+  }
+}
