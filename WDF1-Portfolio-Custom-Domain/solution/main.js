@@ -1,3 +1,9 @@
+/**************************
+*   CODING STANDARD   *
+**************************/
+
+// Use named constants, descriptive names, and purpose comments before nontrivial scopes
+
 const deploymentList = document.querySelector("#deployment-list");
 const domainStatus = document.querySelector("#domain-status");
 const year = document.querySelector("#year");

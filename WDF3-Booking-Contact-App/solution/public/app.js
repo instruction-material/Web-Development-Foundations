@@ -1,3 +1,9 @@
+/**************************
+*   CODING STANDARD   *
+**************************/
+
+// Use named constants, descriptive names, and purpose comments before nontrivial scopes
+
 const form = document.querySelector("#contact-form");
 const status = document.querySelector("#status");
 

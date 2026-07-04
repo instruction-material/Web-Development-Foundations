@@ -1,3 +1,9 @@
+/**************************
+*   CODING STANDARD   *
+**************************/
+
+// Use named constants, descriptive names, and purpose comments before nontrivial scopes
+
 const socket = io();
 const identityForm = document.querySelector("#identity-form");
 const chatForm = document.querySelector("#chat-form");

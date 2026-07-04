@@ -1,3 +1,9 @@
+/**************************
+*   CODING STANDARD   *
+**************************/
+
+// Use named constants, descriptive names, and purpose comments before nontrivial scopes
+
 const status = document.querySelector("#status");
 const apiBaseUrl = window.__APP_CONFIG__?.apiBaseUrl ?? "http://localhost:4001";
 

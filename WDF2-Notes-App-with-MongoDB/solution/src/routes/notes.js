@@ -1,3 +1,9 @@
+/**************************
+*   CODING STANDARD   *
+**************************/
+
+// Use named constants, descriptive names, and purpose comments before nontrivial scopes
+
 import { Router } from "express";
 import { z } from "zod";
 import { Note } from "../models/note.js";

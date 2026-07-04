@@ -1,3 +1,9 @@
+/**************************
+*   CODING STANDARD   *
+**************************/
+
+// Use named constants, descriptive names, and purpose comments before nontrivial scopes
+
 import express from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";

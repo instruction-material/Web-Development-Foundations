@@ -1,3 +1,9 @@
+/**************************
+*   CODING STANDARD   *
+**************************/
+
+// Use named constants, descriptive names, and purpose comments before nontrivial scopes
+
 import mongoose from "mongoose";
 
 const noteSchema = new mongoose.Schema(
