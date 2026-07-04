@@ -1,19 +1,45 @@
+/*****************
+*   CONSTANTS   *
+*****************/
+
+:root {
+	--page-background: #f7f4ed;
+	--page-text-color: #1f2937;
+	--panel-background: white;
+	--panel-shadow: rgba(15, 23, 42, 0.08);
+	--panel-width: 720px;
+	--page-spacing: 48px;
+	--panel-spacing: 24px;
+	--panel-radius: 18px;
+	--entry-spacing: 10px;
+}
+
+
+/*****************
+*   BASE PAGE   *
+*****************/
+
 body {
 	font-family: "Helvetica Neue", Arial, sans-serif;
-	background: #f7f4ed;
-	color: #1f2937;
+	background: var(--page-background);
+	color: var(--page-text-color);
 	margin: 0;
 }
 
+
+/******************
+*   COMPONENTS   *
+******************/
+
 .app {
-	max-width: 720px;
-	margin: 48px auto;
-	padding: 24px;
-	background: white;
-	border-radius: 18px;
-	box-shadow: 0 16px 48px rgba(15, 23, 42, 0.08);
+	max-width: var(--panel-width);
+	margin: var(--page-spacing) auto;
+	padding: var(--panel-spacing);
+	background: var(--panel-background);
+	border-radius: var(--panel-radius);
+	box-shadow: 0 16px 48px var(--panel-shadow);
 }
 
 li + li {
-	margin-top: 10px;
+	margin-top: var(--entry-spacing);
 }
