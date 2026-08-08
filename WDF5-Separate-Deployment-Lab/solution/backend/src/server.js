@@ -1,9 +1,3 @@
-/**************************
-*   CODING STANDARD   *
-**************************/
-
-// Use named constants, descriptive names, and purpose comments before nontrivial scopes
-
 import cors from "cors";
 import express from "express";
 
@@ -15,16 +9,16 @@ const region = process.env.REGION ?? "local";
 app.use(cors({ origin: frontendOrigin }));
 
 app.get("/api/status", (_request, response) => {
-  response.json({
-    message: "Solution API is running.",
-    region,
-  });
+    response.json({
+        message: "Solution API is running.",
+        region,
+    });
 });
 
 app.get("/api/health", (_request, response) => {
-  response.json({ ok: true });
+    response.json({ ok: true });
 });
 
 app.listen(port, () => {
-  console.log(`API listening on http://localhost:${port}`);
+    console.log(`API listening on http://localhost:${port}`);
 });

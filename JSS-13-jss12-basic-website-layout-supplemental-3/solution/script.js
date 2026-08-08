@@ -12,17 +12,17 @@ let entry_count = 0;
  * @brief Append one numbered checkpoint entry to the page
  */
 function append_entry() {
-  entry_count += 1;
+    entry_count += 1;
 
-  const item = document.createElement("li");
-  item.textContent = `${ENTRY_LABEL_PREFIX} ${entry_count}: ${ENTRY_MESSAGE}.`;
-  entries_list.append(item);
+    const item = document.createElement("li");
+    item.textContent = `${ENTRY_LABEL_PREFIX} ${entry_count}: ${ENTRY_MESSAGE}.`;
+    entries_list.append(item);
 }
 
 // Wire the page action when the required elements are present
 if (
-  action_button instanceof HTMLButtonElement &&
-  entries_list instanceof HTMLUListElement
+    action_button instanceof HTMLButtonElement &&
+    entries_list instanceof HTMLUListElement
 ) {
-  action_button.addEventListener("click", append_entry);
+    action_button.addEventListener("click", append_entry);
 }

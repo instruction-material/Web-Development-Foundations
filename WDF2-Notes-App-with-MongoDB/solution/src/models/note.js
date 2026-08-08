@@ -1,31 +1,25 @@
-/**************************
-*   CODING STANDARD   *
-**************************/
-
-// Use named constants, descriptive names, and purpose comments before nontrivial scopes
-
 import mongoose from "mongoose";
 
 const noteSchema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: true,
-      trim: true,
-      maxlength: 120,
+    {
+        title: {
+            type: String,
+            required: true,
+            trim: true,
+            maxlength: 120,
+        },
+        body: {
+            type: String,
+            required: true,
+            trim: true,
+            maxlength: 2000,
+        },
+        tags: {
+            type: [String],
+            default: [],
+        },
     },
-    body: {
-      type: String,
-      required: true,
-      trim: true,
-      maxlength: 2000,
-    },
-    tags: {
-      type: [String],
-      default: [],
-    },
-  },
-  { timestamps: true },
+    { timestamps: true },
 );
 
 noteSchema.index({ title: 1 });
