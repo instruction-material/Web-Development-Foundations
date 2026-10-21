@@ -4,40 +4,87 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { Server } from "socket.io";
 
+const port = Number(process.env.PORT ?? 3003);
+if (!Number.isInteger(port) || port < 0 || port > 65535) {
+    throw new Error("PORT must be an integer from 0 through 65535.");
+}
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
-const port = Number(process.env.PORT ?? 3003);
+const io = new Server(server, { maxHttpBufferSize: 8 * 1024 });
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
 app.use(express.static(path.join(__dirname, "../public")));
 
-io.on("connection", (socket) => {
-    socket.on("chat:join", (nickname) => {
-        socket.data.nickname = nickname;
-        socket.emit("chat:system", `You joined as ${nickname}.`);
-        socket.broadcast.emit("chat:system", `${nickname} joined the room.`);
-    });
+function textValue(value, maximum) {
+    if (typeof value !== "string") return null;
+    const text = value.trim();
+    return text.length > 0 && text.length <= maximum ? text : null;
+}
+function reply(acknowledge, result) {
+    if (typeof acknowledge === "function") acknowledge(result);
+}
 
-    socket.on("chat:message", (value) => {
-        const nickname = socket.data.nickname ?? "anonymous";
+io.on("connection", (socket) => {
+    socket.on("chat:join", (value, acknowledge) => {
+        const nickname = textValue(value, 32);
+        if (nickname === null) {
+            reply(acknowledge, { ok: false, error: "nickname_invalid" });
+            return;
+        }
+        const previous = socket.data.nickname;
+        socket.data.nickname = nickname;
+        socket.emit("chat:system", "You joined as " + nickname + ".");
+        socket.broadcast.emit(
+            "chat:system",
+            previous
+                ? previous + " is now " + nickname + "."
+                : nickname + " joined the room.",
+        );
+        reply(acknowledge, { ok: true, nickname });
+    });
+    socket.on("chat:message", (value, acknowledge) => {
+        const message = textValue(value, 280);
+        if (message === null) {
+            reply(acknowledge, { ok: false, error: "message_invalid" });
+            return;
+        }
         io.emit("chat:message", {
-            nickname,
-            value,
+            nickname: socket.data.nickname ?? "anonymous",
+            value: message,
             timestamp: new Date().toISOString(),
         });
+        reply(acknowledge, { ok: true });
     });
-
     socket.on("disconnect", () => {
         if (socket.data.nickname) {
             socket.broadcast.emit(
                 "chat:system",
-                `${socket.data.nickname} left the room.`,
+                socket.data.nickname + " left the room.",
             );
         }
     });
 });
 
+let closing = false;
+function close() {
+    if (closing) return;
+    closing = true;
+    io.close(() => console.log(JSON.stringify({ event: "closed" })));
+}
+process.once("SIGINT", close);
+process.once("SIGTERM", close);
+server.once("error", (error) => {
+    console.error(
+        JSON.stringify({ event: "error", code: error.code ?? "listen_failed" }),
+    );
+    process.exitCode = 1;
+});
 server.listen(port, "127.0.0.1", () => {
-    console.log(`Realtime chat listening on http://localhost:${port}`);
+    console.log(
+        JSON.stringify({
+            event: "ready",
+            host: "127.0.0.1",
+            port: server.address().port,
+            pid: process.pid,
+        }),
+    );
 });

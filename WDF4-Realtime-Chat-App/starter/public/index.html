@@ -4,16 +4,46 @@
         <meta charset="UTF-8" />
         <meta content="width=device-width, initial-scale=1.0" name="viewport" />
         <title>Realtime Chat Starter</title>
+        <style>
+            input {
+                min-width: 0;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+            #messages {
+                overflow-wrap: anywhere;
+                max-height: 18rem;
+                overflow-y: auto;
+            }
+            button:disabled {
+                opacity: 0.55;
+                cursor: default;
+            }
+        </style>
     </head>
     <body>
         <h1>Realtime Chat Starter</h1>
-        <ul id="messages"></ul>
+        <p id="connection-status" role="status">Connecting</p>
+        <button id="reconnect" type="button">Reconnect</button>
+        <p id="chat-error" role="status"></p>
+        <ul
+            id="messages"
+            role="log"
+            aria-label="Messages"
+            aria-live="polite"
+            aria-relevant="additions"
+        ></ul>
         <form id="chat-form">
-            <label for="message"></label
-            ><input id="message" placeholder="Type a message" required />
+            <label for="message">Message</label
+            ><input
+                id="message"
+                placeholder="Type a message"
+                maxlength="280"
+                required
+            />
             <button type="submit">Send</button>
         </form>
-        <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
         <script src="/chat.js" type="module"></script>
     </body>
 </html>
