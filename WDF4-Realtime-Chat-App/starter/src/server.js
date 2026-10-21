@@ -18,6 +18,6 @@ io.on("connection", (socket) => {
     });
 });
 
-server.listen(port, () => {
+server.listen(port, "127.0.0.1", () => {
     console.log(`Realtime chat listening on http://localhost:${port}`);
 });
