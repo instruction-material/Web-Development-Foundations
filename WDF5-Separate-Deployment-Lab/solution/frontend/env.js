@@ -1,3 +1,3 @@
 window.__APP_CONFIG__ = {
-    apiBaseUrl: "https://api.example.com",
+    apiBaseUrl: "http://127.0.0.1:4001",
 };
