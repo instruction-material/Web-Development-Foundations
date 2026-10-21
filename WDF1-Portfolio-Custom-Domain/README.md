@@ -40,9 +40,15 @@ npm run build --workspace WDF1-Portfolio-Custom-Domain/starter
 npm run preview --workspace WDF1-Portfolio-Custom-Domain/starter -- --host 127.0.0.1 --port 4173 --strictPort
 ```
 
-The Node tests check the reference contract and the deliberately unfinished
-starter. They do not certify a learner's completed starter. Check that starter
-against the cases below. Preview serves `dist` at `http://127.0.0.1:4173`;
+The default Node tests check the reference. Run the same contract against the
+learner's starter with:
+
+```sh
+node test/portfolio-project-idea.test.mjs starter
+```
+
+The unfinished starter initially fails the valid-input cases. Complete its
+validator and repeat until all five cases pass. Preview serves `dist` at `http://127.0.0.1:4173`;
 stop it with Ctrl+C after the browser checks.
 
 ## Validation contract
