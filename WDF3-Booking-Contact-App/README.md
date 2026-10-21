@@ -17,7 +17,7 @@ A successful HTTP response proves this local simulation, not inbox arrival.
 | `src/app.js` | HTTP contract, body/request bounds and simulated delivery deadline. |
 | `src/lib/mailer.js` | JSON-only transport and deliberate local failure scenarios. |
 | `src/server.js` | Loopback listener, readiness record and owned shutdown. |
-| `package.json` | Express, Zod and Nodemailer versions and native run commands. |
+| `package.json` | Each role's dependencies and native run commands. |
 
 The browser's constraints improve feedback, but a caller can bypass the form.
 The server must check the request independently before it calls delivery.
@@ -31,7 +31,7 @@ Use Node.js 24 and npm from the complete maintained repository with its root
 ```sh
 node --version
 npm --version
-npm ci --workspace WDF3-Booking-Contact-App/starter
+npm ci
 npm run start --workspace WDF3-Booking-Contact-App/starter
 ```
 
@@ -41,9 +41,10 @@ with host `127.0.0.1` and the selected port. A valid starter submission returns
 pretends that unfinished validation accepted a request. Native HTML constraints
 may stop an empty submission before any HTTP request is sent.
 
-For reference review, stop the starter's own terminal with Ctrl+C, replace
-`starter` with `solution` in the two npm commands, and repeat. Do not stop an
-unrelated process if port 3002 is occupied. Select a free port instead:
+For reference review, stop the starter's own terminal with Ctrl+C, then run
+`npm run start --workspace WDF3-Booking-Contact-App/solution` from the same
+installed repository. Do not stop an unrelated process if port 3002 is
+occupied. Select a free port instead:
 
 ```sh
 PORT=3003 npm run start --workspace WDF3-Booking-Contact-App/solution
@@ -80,9 +81,12 @@ For accepted input return `{ ok: true, value }`, where value contains only the
 four normalized fields. For rejected input return
 `{ ok: false, fields: ["name"] }` with the actual invalid field names.
 Use `request` for an invalid object or unknown-key error. Return each field
-once. Zod's `strictObject`, string constraints and `safeParse` support this
-contract; a deliberate plain-JavaScript implementation is also possible.
-Remove the `notImplemented` result only when the contract is implemented.
+once. The starter declares Express and Nodemailer; implement the key, type,
+trimming and length checks in JavaScript without adding a package. The
+reference uses its declared Zod dependency, including `strictObject` and
+`safeParse`, to express the same contract. Compare that implementation after
+an independent attempt. Remove the `notImplemented` result only when the
+contract is implemented.
 
 ## HTTP outcomes and resource boundaries
 
