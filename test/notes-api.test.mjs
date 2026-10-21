@@ -115,7 +115,7 @@ async function completedStarter(directory) {
 }
 
 test("notes input, HTTP CRUD, identity and recovery for both completed roles", { timeout: 90000 }, async t => {
-    const temporary = await mkdtemp(path.join(tmpdir(), "wdf2-notes-"));
+    const temporary = await mkdtemp(path.join(tmpdir(), ".wdf2-notes-"));
     try {
         await symlink(path.join(root, "node_modules"), path.join(temporary, "node_modules"), "dir");
         for (const role of ["solution", "completed-starter"]) {

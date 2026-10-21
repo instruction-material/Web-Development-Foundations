@@ -1,5 +1,4 @@
 import express from "express";
-import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createNotesRouter } from "./routes/notes.js";
 
@@ -24,7 +23,7 @@ export function createApp(store, log = () => {}) {
         next();
     }, express.json({ limit: "16kb", strict: false }), createNotesRouter(store));
     for (const [url, file] of [["/", "index.html"], ["/app.js", "app.js"], ["/styles.css", "styles.css"]]) {
-        app.get(url, (_request, response) => response.sendFile(path.join(publicRoot, file)));
+        app.get(url, (_request, response) => response.sendFile(file, { root: publicRoot }));
     }
     app.use((request, response) => {
         if (request.path.startsWith("/api/")) return response.status(404).json({ error: "not_found" });
