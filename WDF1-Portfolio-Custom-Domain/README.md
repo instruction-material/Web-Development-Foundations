@@ -2,7 +2,7 @@
 
 This lab continues the HTML, CSS and DOM portfolio with a separate JavaScript
 validation module and a local project-idea form. WDF0-WDF2 use the original
-four-file edition. This module edition is a new saved project: retain the
+[four-file edition](basics/README.md). This module edition is a new saved project: retain the
 earlier files and transfer intended content edits into it.
 
 ## Files and roles

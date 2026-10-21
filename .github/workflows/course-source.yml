@@ -1,0 +1,43 @@
+name: Course source verification
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24.18.0
+          cache: npm
+      - name: Pin npm
+        run: |
+          npm install --global npm@12.0.1
+          test "$(npm --version)" = "12.0.1"
+      - name: Install from the maintained root lockfile
+        run: npm ci
+      - name: Audit production and development dependencies
+        run: npm audit
+      - name: Check reference contracts and dependency integration
+        run: npm test
+      - name: Build both portfolio editions and roles
+        run: npm run build
+      - name: Retain portfolio build evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: portfolio-builds
+          path: |
+            WDF1-Portfolio-Custom-Domain/basics/starter/dist/
+            WDF1-Portfolio-Custom-Domain/basics/solution/dist/
+            WDF1-Portfolio-Custom-Domain/starter/dist/
+            WDF1-Portfolio-Custom-Domain/solution/dist/
+          if-no-files-found: error
+          retention-days: 7

@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "workspaces": [
+    "WDF1-Portfolio-Custom-Domain/basics/solution",
+    "WDF1-Portfolio-Custom-Domain/basics/starter",
     "WDF1-Portfolio-Custom-Domain/solution",
     "WDF1-Portfolio-Custom-Domain/starter",
     "WDF2-Notes-App-with-MongoDB/solution",
@@ -20,6 +22,10 @@
     "start": "npm run start --workspaces --if-present",
     "build": "npm run build --workspaces --if-present",
     "preview": "npm run preview --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present"
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "node --test test/*.test.mjs"
+  },
+  "overrides": {
+    "vite": "8.1.6"
   }
 }
