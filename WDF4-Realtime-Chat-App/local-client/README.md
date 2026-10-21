@@ -138,7 +138,7 @@ From the complete repository, the default tests check the reference:
 node --test test/notification-state.test.mjs
 ```
 
-Use the same checks against the completed learner starter:
+Run the same checks against the completed starter:
 
 ```sh
 node test/notification-state.test.mjs starter
