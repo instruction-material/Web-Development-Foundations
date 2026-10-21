@@ -1,64 +1,16 @@
-body {
-    margin: 0;
-    font-family: system-ui, sans-serif;
-    background: linear-gradient(180deg, #f5fbff 0%, #ffffff 100%);
-    color: #102130;
-}
-
-.shell {
-    width: min(48rem, calc(100vw - 2rem));
-    margin: 0 auto;
-    padding: 3rem 0;
-}
-
-.panel {
-    background: white;
-    border-radius: 1rem;
-    padding: 1.25rem;
-    box-shadow: 0 18px 48px rgba(16, 33, 48, 0.08);
-}
-
-.eyebrow {
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-size: 0.78rem;
-}
-
-.stack {
-    display: grid;
-    gap: 0.85rem;
-}
-
-input,
-textarea,
-button {
-    font: inherit;
-}
-
-input,
-textarea {
-    padding: 0.8rem;
-    border-radius: 0.8rem;
-    border: 1px solid #ccd6e4;
-}
-
-textarea {
-    min-height: 10rem;
-}
-
-button {
-    width: fit-content;
-    padding: 0.75rem 1.1rem;
-    border: none;
-    border-radius: 999px;
-    background: #0c7b93;
-    color: white;
-}
-
-#status[data-tone="success"] {
-    color: #08703a;
-}
-
-#status[data-tone="error"] {
-    color: #a43f2a;
-}
+* { box-sizing: border-box; }
+body { margin: 0; color: #17212b; background: #f6f6f3; font: 1rem/1.5 system-ui, sans-serif; }
+main { max-width: 42rem; margin: auto; padding: 1.25rem; }
+h1 { font-size: 1.8rem; }
+form { display: grid; gap: .5rem; }
+input, select, textarea, button { min-width: 0; max-width: 100%; padding: .65rem; font: inherit; }
+input, select, textarea { width: 100%; border: 1px solid #67737b; border-radius: .25rem; background: white; color: inherit; }
+textarea { min-height: 9rem; resize: vertical; }
+label { margin-top: .5rem; }
+.actions { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: .75rem; }
+button { border: 1px solid #294a52; border-radius: .25rem; cursor: pointer; background: #e6f0eb; color: #17212b; }
+button:disabled { cursor: wait; opacity: .65; }
+:focus-visible { outline: 3px solid #155f4a; outline-offset: 3px; }
+#status { min-height: 3rem; overflow-wrap: anywhere; }
+#status[data-tone="error"] { color: #9b1728; }
+#status[data-tone="success"] { color: #125334; }

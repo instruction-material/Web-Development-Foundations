@@ -1,48 +1,60 @@
-import express from "express";
+import { createServer } from "node:http";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
-import { z } from "zod";
-import { createMailer } from "./lib/mailer.js";
+import { pathToFileURL } from "node:url";
+import { createContactApp } from "./app.js";
+import { createDelivery } from "./lib/mailer.js";
 
-const app = express();
-const port = Number(process.env.PORT ?? 3002);
-const contactEmail = process.env.CONTACT_EMAIL ?? "owner@example.com";
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const mailer = createMailer();
-
-const contactSchema = z.object({
-    name: z.string().trim().min(2).max(80),
-    email: z.string().email(),
-    message: z.string().trim().min(10).max(2000),
-});
-
-app.use(express.json());
-app.use(express.static(path.join(__dirname, "../public")));
-
-app.post("/api/contact", async (request, response) => {
-    const parsed = contactSchema.safeParse(request.body);
-
-    if (!parsed.success) {
-        return response.status(400).json({
-            error: "Invalid contact request",
-            details: parsed.error.flatten(),
-        });
+export async function startContactServer({
+    port = Number(process.env.PORT ?? 3002),
+    scenario = process.env.CONTACT_SCENARIO ?? "ok",
+    log = event => console.log(JSON.stringify(event)),
+} = {}) {
+    if (!Number.isInteger(port) || port < 0 || port > 65535) {
+        throw new Error("Invalid port");
     }
-
-    await mailer.sendMail({
-        to: contactEmail,
-        from: contactEmail,
-        replyTo: parsed.data.email,
-        subject: `Booking request from ${parsed.data.name}`,
-        text: `${parsed.data.name} <${parsed.data.email}>\n\n${parsed.data.message}`,
+    const server = createServer(createContactApp({ deliver: createDelivery(scenario), log }));
+    server.requestTimeout = 10000;
+    server.headersTimeout = 5000;
+    server.keepAliveTimeout = 1000;
+    server.maxRequestsPerSocket = 20;
+    server.maxConnections = 20;
+    server.dropMaxConnection = true;
+    await new Promise((resolve, reject) => {
+        server.once("error", reject);
+        server.listen(port, "127.0.0.1", resolve);
     });
+    return {
+        server,
+        port: server.address().port,
+        async close() {
+            await new Promise((resolve, reject) => {
+                server.close(error => error ? reject(error) : resolve());
+                server.closeAllConnections();
+            });
+        },
+    };
+}
 
-    return response.status(202).json({
-        accepted: true,
-        preview: "Use SMTP env vars for real delivery.",
-    });
-});
-
-app.listen(port, () => {
-    console.log(`Contact app listening on http://localhost:${port}`);
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
+    try {
+        const service = await startContactServer();
+        console.log(JSON.stringify({ event: "ready", host: "127.0.0.1", port: service.port }));
+        let stopping = false;
+        const stop = async () => {
+            if (stopping) return;
+            stopping = true;
+            try {
+                await service.close();
+                console.log(JSON.stringify({ event: "stopped" }));
+            } catch {
+                console.error(JSON.stringify({ event: "stop_failed" }));
+                process.exitCode = 1;
+            }
+        };
+        process.once("SIGINT", stop);
+        process.once("SIGTERM", stop);
+    } catch {
+        console.error(JSON.stringify({ event: "start_failed", code: "check_port_and_scenario" }));
+        process.exitCode = 1;
+    }
+}

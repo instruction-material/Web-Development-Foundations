@@ -1,17 +1,25 @@
 import nodemailer from "nodemailer";
+import { setTimeout as delay } from "node:timers/promises";
 
 export function createMailer() {
-    if (process.env.SMTP_HOST) {
-        return nodemailer.createTransport({
-            host: process.env.SMTP_HOST,
-            port: Number(process.env.SMTP_PORT ?? 587),
-            secure: false,
-            auth: {
-                user: process.env.SMTP_USER,
-                pass: process.env.SMTP_PASS,
-            },
-        });
-    }
-
     return nodemailer.createTransport({ jsonTransport: true });
+}
+
+export function createDelivery(scenario = "ok") {
+    if (!["ok", "fail", "timeout"].includes(scenario)) throw new Error("Invalid scenario");
+    const mailer = createMailer();
+    return async (contact, { signal }) => {
+        signal.throwIfAborted();
+        if (scenario === "fail") throw new Error("Simulated provider failure");
+        if (scenario === "timeout") await delay(30000, undefined, { signal });
+        signal.throwIfAborted();
+        await mailer.sendMail({
+            to: "inbox@example.invalid",
+            from: "course@example.invalid",
+            replyTo: contact.replyTo,
+            subject: "Fictional contact request",
+            text: contact.name + "\n" + contact.topic + "\n\n" + contact.message,
+        });
+        signal.throwIfAborted();
+    };
 }
