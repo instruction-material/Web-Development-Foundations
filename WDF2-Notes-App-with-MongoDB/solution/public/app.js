@@ -1,56 +1,83 @@
-const noteForm = document.querySelector("#note-form");
-const notesList = document.querySelector("#notes");
-
-function tagList(value) {
-    return value
-        .split(",")
-        .map((item) => item.trim())
-        .filter(Boolean);
+const form = document.querySelector("#note-form");
+const list = document.querySelector("#notes");
+const status = document.querySelector("#status");
+const cancel = document.querySelector("#cancel");
+const saved = new Map();
+let editing = null, busy = false;
+function lock(value) {
+    busy = value;
+    for (const node of document.querySelectorAll("button, input, textarea")) node.disabled = value;
 }
-
-async function loadNotes() {
-    const response = await fetch("/api/notes");
-    const notes = await response.json();
-    notesList.innerHTML = "";
-
-    for (const note of notes) {
-        const li = document.createElement("li");
-        li.className = "note";
-        li.innerHTML = `
-			<h3>${note.title}</h3>
-			<p>${note.body}</p>
-			<small>${(note.tags ?? []).join(", ")}</small>
-			<button data-id="${note._id}">Delete</button>
-		`;
-        notesList.appendChild(li);
+async function request(path, options = {}) {
+    const response = await fetch(path, { ...options, signal: AbortSignal.timeout(2000) });
+    if (response.status === 204) return null;
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error ?? "request_failed");
+    return data;
+}
+function reset() {
+    editing = null;
+    form.reset();
+    form.querySelector('[type="submit"]').textContent = "Create note";
+    cancel.hidden = true;
+}
+async function load() {
+    const rows = await request("/api/notes");
+    saved.clear();
+    list.replaceChildren();
+    for (const row of rows) {
+        saved.set(row.id, row);
+        const item = document.createElement("li");
+        for (const [tag, text] of [["h3", row.title], ["p", row.body], ["small", row.tags.join(", ")]]) {
+            const node = document.createElement(tag);
+            node.textContent = text;
+            item.append(node);
+        }
+        for (const action of ["Edit", "Delete"]) {
+            const button = document.createElement("button");
+            button.type = "button"; button.textContent = action;
+            button.dataset.id = row.id; button.dataset.action = action;
+            item.append(button);
+        }
+        list.append(item);
     }
 }
-
-noteForm?.addEventListener("submit", async (event) => {
+async function perform(action) {
+    if (busy) return;
+    lock(true); status.textContent = "Working...";
+    try { await action(); }
+    catch (error) { status.textContent = "Request failed: " + (error.name === "TimeoutError" ? "timeout" : error.message); }
+    finally { lock(false); }
+}
+form.addEventListener("submit", event => {
     event.preventDefault();
-    const formData = new FormData(noteForm);
-    await fetch("/api/notes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            title: formData.get("title"),
-            body: formData.get("body"),
-            tags: tagList(String(formData.get("tags") ?? "")),
-        }),
+    const data = new FormData(form);
+    const input = { title: data.get("title"), body: data.get("body"),
+        tags: String(data.get("tags")).split(",").map(value => value.trim()).filter(Boolean) };
+    perform(async () => {
+        await request(editing ? "/api/notes/" + editing : "/api/notes", {
+            method: editing ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(input),
+        });
+        reset(); await load(); status.textContent = "Note saved.";
     });
-    noteForm.reset();
-    await loadNotes();
 });
-
-notesList?.addEventListener("click", async (event) => {
-    const target = event.target;
-
-    if (!(target instanceof HTMLButtonElement)) {
-        return;
-    }
-
-    await fetch(`/api/notes/${target.dataset.id}`, { method: "DELETE" });
-    await loadNotes();
+cancel.addEventListener("click", () => { reset(); status.textContent = "Edit cancelled."; });
+list.addEventListener("click", event => {
+    const button = event.target;
+    if (busy || !(button instanceof HTMLButtonElement) || !button.dataset.id) return;
+    const row = saved.get(button.dataset.id);
+    if (!row) return;
+    if (button.dataset.action === "Edit") {
+        editing = row.id;
+        for (const field of ["title", "body", "tags"]) form.elements.namedItem(field).value = field === "tags" ? row.tags.join(", ") : row[field];
+        form.querySelector('[type="submit"]').textContent = "Update note";
+        cancel.hidden = false;
+        form.elements.namedItem("title").focus();
+        status.textContent = "Editing note.";
+    } else perform(async () => {
+        await request("/api/notes/" + row.id, { method: "DELETE" });
+        if (editing === row.id) reset();
+        await load(); status.textContent = "Note deleted.";
+    });
 });
-
-loadNotes();
+perform(async () => { await load(); status.textContent = "Notes loaded."; });

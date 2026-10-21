@@ -1,44 +1,12 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-        <title>Notes App Solution</title>
-        <link href="/styles.css" rel="stylesheet" />
-    </head>
-    <body>
-        <main class="shell">
-            <section class="panel">
-                <h1>Notes App</h1>
-                <form class="stack" id="note-form">
-                    <label for="title"></label
-                    ><input
-                        id="title"
-                        name="title"
-                        placeholder="Title"
-                        required
-                    />
-                    <label for="body"></label
-                    ><textarea
-                        id="body"
-                        name="body"
-                        placeholder="Body"
-                        required
-                    ></textarea>
-                    <label for="tags"></label
-                    ><input
-                        id="tags"
-                        name="tags"
-                        placeholder="Comma-separated tags"
-                    />
-                    <button type="submit">Save note</button>
-                </form>
-            </section>
-            <section class="panel">
-                <h2>Saved Notes</h2>
-                <ul class="notes" id="notes"></ul>
-            </section>
-        </main>
-        <script src="/app.js" type="module"></script>
-    </body>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Local Notes</title><link rel="stylesheet" href="/styles.css"></head>
+<body><main class="shell"><h1>Local Notes</h1>
+<form id="note-form">
+<label for="title">Title</label><input id="title" name="title" required maxlength="120">
+<label for="body">Body</label><textarea id="body" name="body" required maxlength="2000"></textarea>
+<label for="tags">Tags, separated by commas</label><input id="tags" name="tags">
+<div><button type="submit">Create note</button><button id="cancel" type="button" hidden>Cancel edit</button></div>
+</form><p id="status" role="status" aria-live="polite"></p><h2>Saved notes</h2><ul id="notes"></ul>
+</main><script src="/app.js" type="module"></script></body>
 </html>
