@@ -28,7 +28,7 @@ async function load() {
     for (const row of rows) {
         saved.set(row.id, row);
         const item = document.createElement("li");
-        for (const [tag, text] of [["h3", row.title], ["p", row.body], ["small", row.tags.join(", ")]]) {
+        for (const [tag, text] of [["h3", row.title], ["p", row.body], ["small", JSON.stringify(row.tags)]]) {
             const node = document.createElement(tag);
             node.textContent = text;
             item.append(node);
@@ -52,9 +52,11 @@ async function perform(action) {
 form.addEventListener("submit", event => {
     event.preventDefault();
     const data = new FormData(form);
-    const input = { title: data.get("title"), body: data.get("body"),
-        tags: String(data.get("tags")).split(",").map(value => value.trim()).filter(Boolean) };
     perform(async () => {
+        let tags;
+        try { tags = JSON.parse(String(data.get("tags") ?? "").trim() || "[]"); }
+        catch { throw new Error("invalid_tags_json"); }
+        const input = { title: data.get("title"), body: data.get("body"), tags };
         await request(editing ? "/api/notes/" + editing : "/api/notes", {
             method: editing ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(input),
         });
@@ -69,7 +71,7 @@ list.addEventListener("click", event => {
     if (!row) return;
     if (button.dataset.action === "Edit") {
         editing = row.id;
-        for (const field of ["title", "body", "tags"]) form.elements.namedItem(field).value = field === "tags" ? row.tags.join(", ") : row[field];
+        for (const field of ["title", "body", "tags"]) form.elements.namedItem(field).value = field === "tags" ? JSON.stringify(row.tags) : row[field];
         form.querySelector('[type="submit"]').textContent = "Update note";
         cancel.hidden = false;
         form.elements.namedItem("title").focus();

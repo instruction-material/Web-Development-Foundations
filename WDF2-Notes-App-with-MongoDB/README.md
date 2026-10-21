@@ -51,6 +51,11 @@ nonempty strings of length 1..24 are accepted, with no duplicates after trimming
 Strings must be well-formed Unicode; lengths use JavaScript UTF-16 code units.
 Numbers, null, arrays, empty text, and a string in place of a tags array are invalid.
 
+The browser tag field accepts a JSON array, for example `["example", "sky"]`;
+an empty field means `[]`. Editing displays that exact array as JSON, preserving
+commas, quotes, and internal line breaks inside a tag. Invalid JSON retains the
+form and sends no request. Valid JSON of the wrong shape is rejected by the API.
+
 Each stored record adds a UUID `id`, `createdAt`, and `updatedAt`. An ID identifies
 one record independently of its editable title. Timestamps are canonical UTC ISO
 strings at the API boundary. Replacement retains the ID and creation time and

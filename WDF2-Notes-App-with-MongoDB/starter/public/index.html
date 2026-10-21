@@ -5,7 +5,7 @@
 <form id="note-form">
 <label for="title">Title</label><input id="title" name="title" required maxlength="120">
 <label for="body">Body</label><textarea id="body" name="body" required maxlength="2000"></textarea>
-<label for="tags">Tags, separated by commas</label><input id="tags" name="tags">
+<label for="tags">Tags (JSON array)</label><input id="tags" name="tags" placeholder='["example", "sky"]'>
 <div><button type="submit">Create note</button><button id="cancel" type="button" hidden>Cancel edit</button></div>
 </form><p id="status" role="status" aria-live="polite"></p><h2>Saved notes</h2><ul id="notes"></ul>
 </main><script src="/app.js" type="module"></script></body>
