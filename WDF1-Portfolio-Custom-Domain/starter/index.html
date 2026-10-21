@@ -39,6 +39,30 @@
                 <h2>Deployment Notes</h2>
                 <ul id="deployment-list"></ul>
             </section>
+
+            <section class="section" aria-labelledby="idea-heading">
+                <h2 id="idea-heading">Project idea</h2>
+                <form id="project-idea-form" aria-describedby="idea-lifetime">
+                    <label for="project-title">Project title</label>
+                    <input id="project-title" name="projectTitle" required maxlength="60" />
+                    <label for="project-type">Project type</label>
+                    <select id="project-type" name="projectType" required>
+                        <option value="">Choose a type</option>
+                        <option value="website">Website</option>
+                        <option value="game">Game</option>
+                        <option value="data">Data story</option>
+                    </select>
+                    <label for="project-goal">Goal</label>
+                    <textarea id="project-goal" name="goal" required maxlength="200"></textarea>
+                    <div class="form-actions">
+                        <button type="submit">Preview idea</button>
+                        <button type="reset">Clear</button>
+                    </div>
+                </form>
+                <p id="idea-lifetime">Local draft only. Reloading clears it.</p>
+                <p id="idea-status" role="status"></p>
+                <dl id="idea-summary" class="idea-summary"></dl>
+            </section>
         </main>
 
         <footer class="footer">

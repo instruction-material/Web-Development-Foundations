@@ -1,0 +1,26 @@
+[
+  {
+    "id": "e1",
+    "sequence": 1,
+    "type": "message",
+    "text": "Workshop opens at 4:00."
+  },
+  {
+    "id": "e2",
+    "sequence": 2,
+    "type": "status",
+    "text": "Room changed to Lab B."
+  },
+  {
+    "id": "e2",
+    "sequence": 2,
+    "type": "status",
+    "text": "duplicate"
+  },
+  {
+    "id": "e3",
+    "sequence": 3,
+    "type": "message",
+    "text": 42
+  }
+]
