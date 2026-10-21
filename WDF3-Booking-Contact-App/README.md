@@ -72,9 +72,24 @@ workspace/root package manifests and root lockfile before `npm ci`.
 
 Reject null, arrays, non-objects and unknown keys. Trim name, reply address and
 message. Name has 2–80 characters; reply address has at most 254 characters and
-must be a valid email shape; topic is exactly `project` or `lesson`; message
+must match the course address pattern below; topic is exactly `project` or `lesson`; message
 has 10–2000 characters. Lengths use JavaScript UTF-16 code units (`string.length`), as recorded by the maintained dependency lockfile and HTML `maxlength`; one visible symbol can occupy more than one unit. Limits apply after trimming. Do not treat a non-string
 as text by coercion. Keep markup-looking message text as text.
+
+The reply address uses this restricted ASCII pattern, matching the reference's
+locked Zod email rule. Apply it after trimming and checking the 254-unit limit.
+The starter can use the same JavaScript regular expression without a package:
+
+```js
+const contactAddressPattern = /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$/;
+```
+
+For example, `reader.name+tag@example.invalid` is accepted. Leading or
+consecutive dots in the local part and a numeric final domain label are
+rejected. This course pattern does not cover every standards-valid mailbox,
+including internationalized or quoted addresses, and does not verify address
+ownership, inbox existence or delivery. Native browser validation is an earlier
+convenience check; the server still applies this complete contract.
 
 Implement `parseContact(input)` in the starter's `src/validation.js`.
 For accepted input return `{ ok: true, value }`, where value contains only the

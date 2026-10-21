@@ -22,7 +22,7 @@ export function parseContact(input) {
         value[key] = key === "topic" ? input[key] : input[key].trim();
     }
     if (typeof value.name === "string" && (value.name.length < 2 || value.name.length > 80)) fields.push("name");
-    if (typeof value.replyTo === "string" && (value.replyTo.length > 254 || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(value.replyTo))) fields.push("replyTo");
+    if (typeof value.replyTo === "string" && (value.replyTo.length > 254 || !/^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$/.test(value.replyTo))) fields.push("replyTo");
     if (typeof value.topic === "string" && !["project", "lesson"].includes(value.topic)) fields.push("topic");
     if (typeof value.message === "string" && (value.message.length < 10 || value.message.length > 2000)) fields.push("message");
     return fields.length ? { ok: false, fields: [...new Set(fields)] } : { ok: true, value };
@@ -35,6 +35,8 @@ const accepted = [
     good,
     { ...good, name: "  雪星  ", replyTo: " reader@example.invalid ", message: "  <b>Fictional text</b>  " },
     { ...good, name: "AB", topic: "lesson", message: "1234567890" },
+    { ...good, replyTo: "reader.name+tag@example.invalid" },
+    { ...good, replyTo: "o'connor@example.invalid" },
     { ...good, name: "😀".repeat(40), message: "😀".repeat(1000) },
     { ...good, name: "x".repeat(80), replyTo: email254, message: "x".repeat(2000) },
 ];
@@ -44,6 +46,11 @@ const rejected = [
     { ...good, name: " " }, { ...good, name: "A" }, { ...good, name: "x".repeat(81) },
     { ...good, name: "😀".repeat(41) }, { ...good, message: "😀".repeat(1001) },
     { ...good, name: 42 }, { ...good, replyTo: "x@x" }, { ...good, replyTo: "x@@x.invalid" },
+    { ...good, replyTo: ".reader@example.invalid" },
+    { ...good, replyTo: "reader..name@example.invalid" },
+    { ...good, replyTo: "reader@example.12" },
+    { ...good, replyTo: "reader@-example.invalid" },
+    { ...good, replyTo: "雪@example.invalid" },
     { ...good, replyTo: "x".repeat(255) + "@example.invalid" }, { ...good, replyTo: null },
     { ...good, topic: "other" }, { ...good, topic: " project " }, { ...good, topic: 0 },
     { ...good, message: " " }, { ...good, message: "123456789" },
