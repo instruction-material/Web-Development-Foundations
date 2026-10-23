@@ -14,7 +14,7 @@ const files = new Map([
     ["/styles.css", ["styles.css", "text/css; charset=utf-8"]],
 ]);
 
-const server = http.createServer(async (request, response) => {
+export const server = http.createServer(async (request, response) => {
     response.setHeader("Cache-Control", "no-store");
     response.setHeader("X-Content-Type-Options", "nosniff");
     if (request.method !== "GET" && request.method !== "HEAD") {
@@ -50,5 +50,9 @@ server.listen(port, "127.0.0.1", () => {
     console.log(JSON.stringify({ event: "ready", service: "frontend", host: address.address, port: address.port }));
 });
 for (const signal of ["SIGINT", "SIGTERM"]) {
-    process.once(signal, () => server.close());
+    process.once(signal, () => {
+        const deadline = setTimeout(() => server.closeAllConnections(), 1000);
+        deadline.unref();
+        server.close(() => clearTimeout(deadline));
+    });
 }
