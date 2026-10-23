@@ -50,5 +50,8 @@ server.listen(port, "127.0.0.1", () => {
     console.log(JSON.stringify({ event: "ready", service: "frontend", host: address.address, port: address.port }));
 });
 for (const signal of ["SIGINT", "SIGTERM"]) {
-    process.once(signal, () => server.close());
+    process.once(signal, () => {
+        server.close();
+        server.closeAllConnections();
+    });
 }
