@@ -81,7 +81,7 @@ async function request(server, endpoint = "/api/notes", { method = "GET", body, 
 async function completedStarter(directory) {
     await cp(path.join(pack, "starter"), directory, { recursive: true });
     const file = path.join(directory, "src/models/note.js");
-    let source = await readFile(file, "utf8");
+    let source = (await readFile(file, "utf8")).replace(/\r\n/g, "\n");
     const marker = '    // TODO: implement the strict input contract in the README.\n    throw noteError(501, "not_implemented");';
     assert.equal(source.split(marker).length, 2);
     // Independently complete the stated contract using plain JavaScript.
@@ -102,7 +102,7 @@ async function completedStarter(directory) {
     return { title, body, tags };`);
     await writeFile(file, source);
     const store = path.join(directory, "src/store.js");
-    let text = await readFile(store, "utf8");
+    let text = (await readFile(store, "utf8")).replace(/\r\n/g, "\n");
     const missing = '    // TODO: replace one stored record while retaining its identity.\n    throw noteError(501, "not_implemented");';
     assert.equal(text.split(missing).length, 2);
     text = text.replace(missing, `    const old = rows.get(id);
