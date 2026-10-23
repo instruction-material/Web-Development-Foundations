@@ -68,7 +68,12 @@ let closing = false;
 function close() {
     if (closing) return;
     closing = true;
-    io.close(() => console.log(JSON.stringify({ event: "closed" })));
+    const deadline = setTimeout(() => server.closeAllConnections(), 1000);
+    deadline.unref();
+    io.close(() => {
+        clearTimeout(deadline);
+        console.log(JSON.stringify({ event: "closed" }));
+    });
 }
 process.once("SIGINT", close);
 process.once("SIGTERM", close);
@@ -88,3 +93,5 @@ server.listen(port, "127.0.0.1", () => {
         }),
     );
 });
+
+export { server };

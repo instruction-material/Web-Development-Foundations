@@ -42,8 +42,9 @@ Remove-Item Env:PORT
 
 Open the port printed by the server. PORT=0 requests an automatically allocated
 port for a test; it does not mean that a browser should visit port zero.
-Ctrl+C closes the owned Socket.IO clients and HTTP listener. npm run dev in
-the selected workspace additionally watches the source. A watcher restart
+Ctrl+C closes the owned Socket.IO clients and HTTP listener. Active HTTP
+responses have one second to finish before remaining connections close.
+npm run dev in the selected workspace additionally watches the source. A watcher restart
 creates a new process and clears in-memory server state.
 
 ## Trace one message
@@ -147,11 +148,12 @@ state; the restarted server has no saved nickname or message history.
 Run the portable startup and shutdown checks from the repository root:
 
 ```sh
-node --test test/realtime-chat-startup.test.mjs
+node --test test/realtime-chat-startup.test.mjs test/realtime-chat-shutdown.test.mjs
 ```
 
 These check both native roles, their local browser-client bundle, invalid
-ports and release of the listener. They do not replace the two-window browser
+ports, accepted unused connections, draining asset responses and release of
+the listener. They do not replace the two-window browser
 and event checks above.
 
 Retain an evidence table with the input, connected state, expected server

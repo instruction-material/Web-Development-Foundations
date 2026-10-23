@@ -27,7 +27,17 @@ jobs:
       - name: Audit production and development dependencies
         run: npm audit
       - name: Check reference contracts and dependency integration
-        run: npm test
+        run: |
+          set -o pipefail
+          npm test 2>&1 | tee course-test-results.txt
+      - name: Retain source contract and owned-process evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: course-source-contracts
+          path: course-test-results.txt
+          if-no-files-found: error
+          retention-days: 7
       - name: Build both portfolio editions and roles
         run: npm run build
       - name: Retain portfolio build evidence
